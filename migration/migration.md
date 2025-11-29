@@ -16,7 +16,7 @@
 
 ### Целевая конфигурация (после миграции)
 
-*   **Apache2 (панель):** `443/tcp` (HTTPS, сер��ификат Let's Encrypt)
+*   **Apache2 (панель):** `443/tcp` (HTTPS, сертификат Let's Encrypt)
 *   **X-ray (VLESS):** `43443/tcp`
 *   **UFW:** Разрешены порты `443`, `43443`. Порт `8443` будет закрыт.
 
@@ -28,18 +28,18 @@
 
 ```bash
 # Создаем директорию для бэкапов
-mkdir -p /root/migration_backup
+mkdir -p migration/BackUp
 
 # 1. Бэкап конфигурации Apache
-cp /etc/apache2/sites-enabled/pgserver.online.conf /root/migration_backup/pgserver.online.conf.bak
+cp /etc/apache2/sites-enabled/pgserver.online.conf migration/BackUp/pgserver.online.conf.bak
 
 # 2. Бэкап базы данных 3x-ui (самый важный шаг)
-cp /root/3x-ui/db/x-ui.db /root/migration_backup/x-ui.db.bak
+cp /root/3x-ui/db/x-ui.db migration/BackUp/x-ui.db.bak
 
 # 3. Бэкап текущих правил UFW
-ufw status numbered > /root/migration_backup/ufw_rules.bak
+ufw status numbered > migration/BackUp/ufw_rules.bak
 
-echo "Резервные копии созданы в /root/migration_backup/"
+echo "Резервные копии созданы в migration/BackUp/"
 ```
 
 ---
@@ -136,7 +136,7 @@ ufw status
 ### Этап 5: Проверка и завершение
 
 1.  **Проверьте доступ к панели управления.** Откройте в браузере новый адрес: `https://pgserver.online/xray/` (без порта). Вы должны увидеть страницу входа, и браузер должен показать, что используется валидный сертификат (зеленый замок).
-2.  **Проверьте подключение клиента X-ray.** Обновите конфигурацию в вашем клиентском приложени��, указав новый порт `43443`. Убедитесь, что подключение работает.
+2.  **Проверьте подключение клиента X-ray.** Обновите конфигурацию в вашем клиентском приложении, указав новый порт `43443`. Убедитесь, что подключение работает.
 3.  **Проверьте автоматическое обновление сертификатов.**
     ```bash
     certbot renew --dry-run
@@ -163,7 +163,7 @@ ufw status
 
 1.  **Восстановите конфигурацию Apache:**
     ```bash
-    cp /root/migration_backup/pgserver.online.conf.bak /etc/apache2/sites-enabled/pgserver.online.conf
+    cp migration/BackUp/pgserver.online.conf.bak /etc/apache2/sites-enabled/pgserver.online.conf
     systemctl restart apache2
     ```
 
@@ -174,7 +174,7 @@ ufw status
     docker stop 3x-ui
 
     # Копируем бэкап базы
-    cp /root/migration_backup/x-ui.db.bak /root/3x-ui/db/x-ui.db
+    cp migration/BackUp/x-ui.db.bak /root/3x-ui/db/x-ui.db
 
     # Запускаем контейнер
     docker start 3x-ui
