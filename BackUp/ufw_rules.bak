@@ -1,0 +1,19 @@
+Status: active
+
+     To                         Action      From
+     --                         ------      ----
+[ 1] 22/tcp                     ALLOW IN    Anywhere                  
+[ 2] 80/tcp                     ALLOW IN    Anywhere                  
+[ 3] 443                        ALLOW IN    Anywhere                  
+[ 4] 5555                       ALLOW IN    Anywhere                  
+[ 5] 8443                       ALLOW IN    Anywhere                  
+[ 6] 2053                       DENY IN     Anywhere                  
+[ 7] 4200                       DENY IN     Anywhere                  
+[ 8] 22/tcp (v6)                ALLOW IN    Anywhere (v6)             
+[ 9] 80/tcp (v6)                ALLOW IN    Anywhere (v6)             
+[10] 443 (v6)                   ALLOW IN    Anywhere (v6)             
+[11] 5555 (v6)                  ALLOW IN    Anywhere (v6)             
+[12] 8443 (v6)                  ALLOW IN    Anywhere (v6)             
+[13] 2053 (v6)                  DENY IN     Anywhere (v6)             
+[14] 4200 (v6)                  DENY IN     Anywhere (v6)             
+
