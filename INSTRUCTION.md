@@ -29,7 +29,7 @@ cp /root/3x-ui/db/x-ui.db /root/3x-ui/db/x-ui.db.bak_$(date +%Y-%m-%d_%H-%M-%S)
 В базе данных есть несколько таблиц, но для управления пользователями и подключениями ключевыми являются две:
 
 1.  `inbounds`: Хранит настройки входящих подключений (протоколы, порты, параметры).
-2.  `client_traffics`: Хранит данные кли��нтов (пользователей), привязанных к `inbounds`, их трафик и индивидуальные настройки.
+2.  `client_traffics`: Хранит данные клиентов (пользователей), привязанных к `inbounds`, их трафик и индивидуальные настройки.
 
 ### 2.2. Структура таблицы `inbounds`
 
@@ -99,25 +99,25 @@ sqlite3 /root/3x-ui/db/x-ui.db "SELECT c.id, c.email, c.enable, i.remark as inbo
 ```
 *Пример вывода:*
 ```
-1|VLESS-Reality-a1ex_ma|1|VLESS-Reality
-2|VLESS-TCP-user2|1|VLESS-TCP
+1|VLESS-Reality-user_1|1|VLESS-Reality
+2|VLESS-TCP-user_2|1|VLESS-TCP
 ```
 
 ---
 
 ## 4. Изменение конфигурации (Пример)
 
-**Задача:** Для пользователя `VLESS-Reality-a1ex_ma` изменить порт подключения с `443` на `43443`.
+**Задача:** Для пользователя `VLESS-Reality-user_1` изменить порт подключения с `443` на `43443`.
 
-**Логика:** Порт явля��тся свойством **входящего подключения (`inbound`)**, а не конкретного пользователя. Поэтому нам нужно:
-1.  Найти, к какому `inbound` относится пользователь `VLESS-Reality-a1ex_ma`.
+**Логика:** Порт является свойством **входящего подключения (`inbound`)**, а не конкретного пользователя. Поэтому нам нужно:
+1.  Найти, к какому `inbound` относится пользователь `VLESS-Reality-user_1`.
 2.  Изменить порт у этого `inbound`. Это изменение затронет **всех** пользователей, привязанных к данному `inbound`.
 
 ### Шаг 1: Найти `inbound_id` для пользователя
 
 ```bash
 # Запоминаем ID в переменную для удобства
-INBOUND_ID=$(sqlite3 /root/3x-ui/db/x-ui.db "SELECT inbound_id FROM client_traffics WHERE email = 'VLESS-Reality-a1ex_ma';")
+INBOUND_ID=$(sqlite3 /root/3x-ui/db/x-ui.db "SELECT inbound_id FROM client_traffics WHERE email = 'VLESS-Reality-user_1';")
 
 # Проверяем, что ID найден
 echo "Найден Inbound ID: $INBOUND_ID"
